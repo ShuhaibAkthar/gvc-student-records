@@ -1,11 +1,17 @@
-import React from 'react'
+import React from "react";
+import {
+    Card,
+    Input,
+    Checkbox,
+    Button,
+    Typography,
+  } from "@material-tailwind/react";
+
 
 const login = () => {
-  return (
-    <div>
-      this is login
-    </div>
-  )
-}
+  return ( 
+    
+    )
+};
 
-export default login
+export default login;
