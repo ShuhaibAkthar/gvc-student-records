@@ -6,6 +6,8 @@ import { contextBridge, ipcRenderer } from 'electron';
 contextBridge.exposeInMainWorld('api', {
     createStudent: (studentData) => ipcRenderer.invoke('create-student', studentData),
     getStudents: (queryData) => ipcRenderer.invoke('get-students', queryData),
+    getStudent: (id) => ipcRenderer.invoke('get-student', id),
+    updateStudent: (updateData) => ipcRenderer.invoke('update-student', updateData),
 });
 
 contextBridge.exposeInMainWorld('electron', {

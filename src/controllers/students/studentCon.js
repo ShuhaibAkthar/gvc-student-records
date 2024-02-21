@@ -57,6 +57,40 @@ export const getStudents = async (event, queryData) => {
     }
 };
 
+export const getStudent = async (event, id) => {
+    try {
+        // Get the student with the specified id
+        const student = await Student.findById(id);
+
+        // Send the student to the renderer process
+        let res = JSON.stringify(student);
+        event.sender.send("success-res", res);
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error.message || "Error fetching student";
+        event.sender.send("error-res", errorMessage);
+    }
+};
+
+export const updateStudent = async (event, updateData) => {
+    try {
+
+        const { id, studentData } = updateData;
+
+        // Update the student with the specified id
+        const updatedStudent = await Student.findByIdAndUpdate(id
+            , studentData, { new: true });
+
+        // Send the updated student to the renderer process
+        let res = JSON.stringify(updatedStudent);
+        event.sender.send("success-res", res);
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error.message || "Error updating student";
+        event.sender.send("error-res", errorMessage);
+    }
+};
+
 export const createStudent = async (event, studentData) => {
     try {
 

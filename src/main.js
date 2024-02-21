@@ -3,7 +3,7 @@ import path from 'path';
 
 //* db
 import { connectDB } from './config/db/dbConfig'
-import { createStudent, getStudents } from './controllers/students/studentCon';
+import { createStudent, getStudent, getStudents, updateStudent } from './controllers/students/studentCon';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -36,6 +36,8 @@ app.on('ready', () => {
 
   ipcMain.handle('create-student', createStudent);
   ipcMain.handle('get-students', getStudents);
+  ipcMain.handle('get-student', getStudent);
+  ipcMain.handle('update-student', updateStudent);
 
   //* ipcMian.handle:end
   createWindow();
