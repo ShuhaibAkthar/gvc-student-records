@@ -33,10 +33,10 @@ const studentSchema = new Schema({
     type: Date,
     required: true,
   },
-  bloodGroup:{
-    type:String
+  bloodGroup: {
+    type: String
   },
-  email:String,
+  email: String,
   contactNumber: {
     type: Number,
     required: true,

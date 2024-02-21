@@ -1,8 +1,9 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 
 //* db
-import {connectDB} from './config/db/dbConfig'
+import { connectDB } from './config/db/dbConfig'
+import { createStudent, getStudents } from './controllers/students/studentCon';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -33,8 +34,11 @@ app.on('ready', () => {
   connectDB();
   //* ipcMian.handle:start
 
+  ipcMain.handle('create-student', createStudent);
+  ipcMain.handle('get-students', getStudents);
+
   //* ipcMian.handle:end
-  createWindow(); 
+  createWindow();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
