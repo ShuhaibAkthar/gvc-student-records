@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function ListStudents() {
     const [students, setStudents] = useState([]);
@@ -12,29 +13,6 @@ function ListStudents() {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    const fetchStudents = async () => {
-        try {
-            const { ipcRenderer } = window.electron;
-
-            const queryData = { page: currentPage, query, filters };
-            await api.getStudents(queryData);
-
-            ipcRenderer.on("success-res", (event, data) => {
-                data = JSON.parse(data);
-                setStudents(data.students);
-                setCurrentPage(data.currentPage);
-                setTotalPages(data.totalPages);
-            });
-
-            ipcRenderer.on("error-res", (event, errorMessage) => {
-                console.error("Error fetching students:", errorMessage);
-                // Handle the error as needed
-            });
-        } catch (error) {
-            console.error("Error fetching students:", error);
-        }
-    };
 
     useEffect(() => {
 
@@ -133,6 +111,7 @@ function ListStudents() {
                     <tr>
                         <th>Name</th>
                         <th>Reg No</th>
+                        <th>-</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,6 +119,13 @@ function ListStudents() {
                         <tr key={student._id}>
                             <td>{student.name}</td>
                             <td>{student.regNo}</td>
+                            <td>
+                                <Link
+                                    to={`/student/edit/${student._id}`}
+                                >
+                                    Edit
+                                </Link>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

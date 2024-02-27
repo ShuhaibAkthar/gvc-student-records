@@ -100,7 +100,7 @@ const studentSchema = new Schema({
             type: Number,
           },
           exam: {
-            type: Number,
+            type: Boolean,
           },
         },
       ],

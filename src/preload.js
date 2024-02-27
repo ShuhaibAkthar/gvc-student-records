@@ -8,6 +8,9 @@ contextBridge.exposeInMainWorld('api', {
     getStudents: (queryData) => ipcRenderer.invoke('get-students', queryData),
     getStudent: (id) => ipcRenderer.invoke('get-student', id),
     updateStudent: (updateData) => ipcRenderer.invoke('update-student', updateData),
+    getStudentSemester: (id) => ipcRenderer.invoke('get-student-sem', id),
+    updateStudentSemester: (updateData) => ipcRenderer.invoke('update-student-sem', updateData),
+
 });
 
 contextBridge.exposeInMainWorld('electron', {

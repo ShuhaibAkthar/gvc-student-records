@@ -61,9 +61,27 @@ export const getStudent = async (event, id) => {
     try {
         // Get the student with the specified id
         const student = await Student.findById(id);
+        console.log(id);
 
         // Send the student to the renderer process
         let res = JSON.stringify(student);
+        event.sender.send("success-res", res);
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error.message || "Error fetching student";
+        event.sender.send("error-res", errorMessage);
+    }
+};
+
+export const getStudentSemester = async (event, id) => {
+    try {
+        // Get the student semester with the specified id
+        const student = await Student.findById(id).select('semesters');
+
+        console.log(student);
+
+        // Send the student to the renderer process
+        let res = JSON.stringify(student?.semesters);
         event.sender.send("success-res", res);
     } catch (error) {
         console.error(error);
@@ -77,12 +95,37 @@ export const updateStudent = async (event, updateData) => {
 
         const { id, studentData } = updateData;
 
+        console.log(updateData);
+
         // Update the student with the specified id
         const updatedStudent = await Student.findByIdAndUpdate(id
             , studentData, { new: true });
 
         // Send the updated student to the renderer process
         let res = JSON.stringify(updatedStudent);
+        event.sender.send("success-res", res);
+    } catch (error) {
+        console.error(error);
+        const errorMessage = error.message || "Error updating student";
+        event.sender.send("error-res", errorMessage);
+    }
+};
+
+export const updateStudentSemester = async (event, updateData) => {
+    try {
+
+        const { id, newSemesterData } = updateData;
+
+        //* set the semester data to newSemesterData
+        const student = await Student.findById(id);
+        student.semesters = newSemesterData;
+        student.save();
+
+
+        // Send the updated student to the renderer process
+        let res = JSON.stringify({
+            success: true,
+        });
         event.sender.send("success-res", res);
     } catch (error) {
         console.error(error);
