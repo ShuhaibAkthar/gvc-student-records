@@ -1,17 +1,13 @@
-import React from "react";
-import {
-    Card,
-    Input,
-    Checkbox,
-    Button,
-    Typography,
-  } from "@material-tailwind/react";
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-
-const login = () => {
-  return ( 
-    
+function Login() {
+    return (
+        <div>
+            <h1>Login</h1>
+            <Link to="/main_window">Home</Link>
+        </div>
     )
-};
+}
 
-export default login;
+export default Login
