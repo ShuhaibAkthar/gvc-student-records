@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -30,8 +30,73 @@ const schema = yup.object().shape({
 
 function EditStudent() {
 
+
+    const [loading, setLoading] = useState(false);
+
     //* get the id from the url
     const { id } = useParams();
+
+    const [data, setData] = useState([
+        { semesterNumber: 1, subjects: [] },
+        { semesterNumber: 2, subjects: [] },
+        { semesterNumber: 3, subjects: [] },
+        { semesterNumber: 4, subjects: [] },
+        { semesterNumber: 5, subjects: [] },
+        { semesterNumber: 6, subjects: [] }
+    ]);
+
+
+
+    const [subjectData, setSubjectData] = useState({
+        name: '',
+        attendance: 0,
+        seminar: 0,
+        assignment: 0,
+        internal: 0,
+        total: 0,
+        exam: false,
+    });
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentSemester, setCurrentSemester] = useState(null);
+
+    const openModal = (semesterNumber) => {
+        setCurrentSemester(semesterNumber);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setCurrentSemester(null);
+        setIsModalOpen(false);
+    };
+
+    const addSubject = () => {
+        setData((prevData) => {
+            const newData = [...prevData];
+            newData[currentSemester - 1].subjects.push(subjectData);
+            return newData;
+        });
+
+        setSubjectData({
+            name: '',
+            attendance: 0,
+            seminar: 0,
+            assignment: 0,
+            internal: 0,
+            total: 0,
+            exam: false,
+        });
+
+        closeModal();
+    };
+
+    const removeSubject = (semesterNumber, index) => {
+        setData((prevData) => {
+            const newData = [...prevData];
+            newData[semesterNumber - 1].subjects.splice(index, 1);
+            return newData;
+        });
+    };
 
     const { handleSubmit, control, register, formState: { errors }, setValue } = useForm({
         resolver: yupResolver(schema),
@@ -52,8 +117,17 @@ function EditStudent() {
                     //* use loop to set the form values
                     for (const key in data) {
                         if (data.hasOwnProperty(key)) {
-                            const value = data[key];
-                            setValue(key, value);
+                            if (key === 'extracurricularActivities' || key === 'club') {
+                                data[key].forEach((value, index) => {
+                                    setValue(key, value, { shouldValidate: true });
+                                });
+                            } else if (key == 'semester') {
+                                setData(data[key]);
+                            }
+                            else {
+                                const value = data[key];
+                                setValue(key, value);
+                            }
                         }
                     }
                 });
@@ -68,35 +142,9 @@ function EditStudent() {
         };
 
         fetchStudents();
+
     }, []);
 
-
-
-    const { fields: semesters, appendSemester, removeSemester } = useFieldArray({
-        control,
-        name: 'semesters',
-    });
-
-    const { fields: subjectsFields, appendSubject, removeSubject } = useFieldArray({
-        control,
-        name: 'subjects',
-    });
-
-    const addSemester = () => {
-        appendSemester({ semesterNumber: semesters.length + 1, subjects: [] });
-    };
-
-    const removeSemesterAtIndex = (index) => {
-        removeSemester(index);
-    };
-
-    const addSubject = (semesterIndex) => {
-        appendSubject({ name: '', attendance: '', seminar: '', assignment: '', internal: '', total: '', exam: '' });
-    };
-
-    const removeSubjectAtIndex = (semesterIndex, subjectIndex) => {
-        removeSubject(subjectIndex);
-    };
 
     const onSubmit = async (data) => {
         // Handle form submission logic here
@@ -238,11 +286,122 @@ function EditStudent() {
                 <button type="submit">Submit</button>
             </form>
 
-            <div>
-                <Link to={`/student/edit/semester/${id}`}>
-                    Edit Semester
-                </Link>
-            </div>
+            {/* <div>
+                <h1>Semester Form</h1>
+                {loading ? "Loading.." : <div>
+                    <form onSubmit={onSubmit}>
+                        {data.map((semester, index) => (
+                            <div key={index}>
+                                <h3>Semester {semester.semesterNumber}</h3>
+
+                                <div>
+                                    {semester.subjects.map((subject, subjectIndex) => (
+                                        <div key={subjectIndex}>
+                                            <br />
+                                            <h4>Subject {subjectIndex + 1}</h4>
+                                            <label>Subject Name: {subject.name}</label>
+                                            <br />
+
+                                            <label>Attendance: {subject.attendance}</label>
+                                            <br />
+
+                                            <label>Seminar: {subject.seminar}</label>
+                                            <br />
+
+                                            <label>Assignment: {subject.assignment}</label>
+                                            <br />
+
+                                            <label>Internal: {subject.internal}</label>
+                                            <br />
+
+                                            <label>Total: {subject.total}</label>
+                                            <br />
+
+                                            <label>Exam: {subject.exam ? 'Yes' : 'No'}</label>
+
+                                            <button type="button" onClick={() => removeSubject(semester.semesterNumber, subjectIndex)}>
+                                                Remove Subject
+                                            </button>
+                                        </div>
+                                    ))}
+
+                                    <button type="button" onClick={() => openModal(semester.semesterNumber)}>
+                                        Add Subject
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+
+                        <button type="submit">Submit</button>
+                    </form>
+                    {isModalOpen && (
+                        <div className="modal">
+                            <div className="modal-content">
+                                <h2>Add Subject for Semester {currentSemester}</h2>
+                                <label>Name:</label>
+                                <input
+                                    type="text"
+                                    value={subjectData.name}
+                                    onChange={(e) => setSubjectData({ ...subjectData, name: e.target.value })}
+                                />
+                                <br />
+                                <label>Attendance:</label>
+                                <input
+                                    type="number"
+                                    value={subjectData.attendance}
+                                    onChange={(e) => setSubjectData({ ...subjectData, attendance: e.target.value })}
+                                />
+                                <br />
+                                <label>Seminar:</label>
+                                <input
+                                    type="number"
+                                    value={subjectData.seminar}
+                                    onChange={(e) => setSubjectData({ ...subjectData, seminar: e.target.value })}
+                                />
+                                <br />
+                                <label>Assignment:</label>
+                                <input
+                                    type="number"
+                                    value={subjectData.assignment}
+                                    onChange={(e) => setSubjectData({ ...subjectData, assignment: e.target.value })}
+                                />
+                                <br />
+                                <label>Internal:</label>
+                                <input
+                                    type="number"
+                                    value={subjectData.internal}
+                                    onChange={(e) => setSubjectData({ ...subjectData, internal: e.target.value })}
+                                />
+                                <br />
+                                <label>Total:</label>
+                                <input
+                                    type="number"
+                                    value={subjectData.total}
+                                    onChange={(e) => setSubjectData({ ...subjectData, total: e.target.value })}
+                                />
+                                <br />
+                                <label>Exam:</label>
+                                <input
+                                    type="checkbox"
+                                    value={subjectData.exam}
+                                    onChange={(e) => setSubjectData({ ...subjectData, exam: e.target.checked })}
+                                />
+
+
+
+                                <br />
+                                <button type="button" onClick={addSubject}>
+                                    Add Subject
+                                </button>
+
+                                <button type="button" onClick={closeModal}>
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>}
+            </div> */}
         </div>
     )
 }
