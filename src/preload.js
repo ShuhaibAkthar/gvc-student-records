@@ -8,8 +8,13 @@ contextBridge.exposeInMainWorld('api', {
     getStudents: (queryData) => ipcRenderer.invoke('get-students', queryData),
     getStudent: (id) => ipcRenderer.invoke('get-student', id),
     updateStudent: (updateData) => ipcRenderer.invoke('update-student', updateData),
-    getStudentSemester: (id) => ipcRenderer.invoke('get-student-sem', id),
-    updateStudentSemester: (updateData) => ipcRenderer.invoke('update-student-sem', updateData),
+
+    addAdmin: (adminData) => ipcRenderer.invoke('add-admin', adminData),
+    getAdmins: (queryData) => ipcRenderer.invoke('get-admins', queryData),
+    getAdmin: (id) => ipcRenderer.invoke('get-admin', id),
+    updateAdmin: (updateData) => ipcRenderer.invoke('update-admin', updateData),
+    deleteAdmin: (id) => ipcRenderer.invoke('delete-admin', id),
+    loginAdmin: (loginData) => ipcRenderer.invoke('login-admin', loginData),
 
 });
 
