@@ -16,24 +16,35 @@ function ListStudents() {
 
     useEffect(() => {
 
+        const { ipcRenderer } = window.electron;
+
+        ipcRenderer.on("success-res", (event, data) => {
+            data = JSON.parse(data);
+            setStudents(data.students);
+            setCurrentPage(data.currentPage);
+            setTotalPages(data.totalPages);
+        });
+
+        ipcRenderer.on("error-res", (event, errorMessage) => {
+            console.error("Error fetching students:", errorMessage);
+            // Handle the error as needed
+        });
+
+        return () => {
+            ipcRenderer.removeAllListeners("success-res");
+            ipcRenderer.removeAllListeners("error-res");
+        };
+
+    }, []);
+
+    useEffect(() => {
+
         const fetchStudents = async () => {
+            console.log("fetchStudents");
             try {
-                const { ipcRenderer } = window.electron;
 
                 const queryData = { page: currentPage, query, filters };
                 await api.getStudents(queryData);
-
-                ipcRenderer.on("success-res", (event, data) => {
-                    data = JSON.parse(data);
-                    setStudents(data.students);
-                    setCurrentPage(data.currentPage);
-                    setTotalPages(data.totalPages);
-                });
-
-                ipcRenderer.on("error-res", (event, errorMessage) => {
-                    console.error("Error fetching students:", errorMessage);
-                    // Handle the error as needed
-                });
             } catch (error) {
                 console.error("Error fetching students:", error);
             }
