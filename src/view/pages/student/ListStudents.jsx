@@ -30,6 +30,7 @@ function ListStudents() {
             // Handle the error as needed
         });
 
+
         return () => {
             ipcRenderer.removeAllListeners("success-res");
             ipcRenderer.removeAllListeners("error-res");
@@ -128,7 +129,7 @@ function ListStudents() {
                 <tbody>
                     {students.map((student) => (
                         <tr key={student._id}>
-                            <td>{student.name}</td>
+                            <td><Link to={`/student/view/${student._id}`}>{student.name}</Link></td>
                             <td>{student.regNo}</td>
                             <td>
                                 <Link
