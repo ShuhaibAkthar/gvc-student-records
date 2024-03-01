@@ -1,0 +1,97 @@
+.navbar {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-around; /* Arrange items horizontally with space around */
+    /* padding: 10px 0; Add padding to top and bottom */
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  .container {
+    width: 100%;
+    height: calc(100vh - 40px); /* Adjust height to fit remaining space */
+    display: flex;
+  }
+  
+ 
+  .form {
+    flex: 1; /* Take remaining space */
+    padding: 20px;
+  }
+  
+
+  .sidebar {
+    /* height: 84%; */
+    width: 225px;
+    /* position: relative;
+    top: 0;
+    left: 0; */
+    background-color: #696993;
+    /* padding-top: 20px;
+    margin-top: 127px;
+     width: 20%; */
+  }
+
+  .sidebar a {
+    padding: 10px 15px;
+    display: block;
+    color: white;
+    text-decoration: none;
+     font-family: sans-serif;
+  }
+  
+  .sidebar a:hover {
+    background-color: #555;
+  }
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10px; 
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent);
+  }
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  
+  .search-box {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 650px;
+    margin-left: -20px;
+
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+
+
+
+  .collagename{
+    font-size: 50px;
+    text-align: center;
+    color: white;
+    margin-top: 410px;
+    margin-left: 20px;
+  }
