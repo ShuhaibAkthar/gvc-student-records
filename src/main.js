@@ -4,6 +4,7 @@ import path from 'path';
 //* db
 import { connectDB } from './config/db/dbConfig'
 import { createStudent, getStudent, getStudents, getStudentSemester, updateStudent, updateStudentSemester } from './controllers/students/studentCon';
+import { addAdmin, adminLogin, deleteAdmin, getAdmin, getAdmins, updateAdmin } from './controllers/admin/adminCon';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -40,6 +41,13 @@ app.on('ready', () => {
   ipcMain.handle('update-student', updateStudent);
   ipcMain.handle('get-student-sem', getStudentSemester);
   ipcMain.handle('update-student-sem', updateStudentSemester);
+
+  ipcMain.handle('add-admin', addAdmin);
+  ipcMain.handle('get-admins', getAdmins);
+  ipcMain.handle('get-admin', getAdmin);
+  ipcMain.handle('update-admin', updateAdmin);
+  ipcMain.handle('delete-admin', deleteAdmin);
+  ipcMain.handle('login-admin', adminLogin);
 
   //* ipcMian.handle:end
   createWindow();

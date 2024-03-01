@@ -16,7 +16,7 @@ import StudentSemesterForm from './pages/student/StudentSemesterForm.jsx';
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
         <Routes>
-            <Route path="/main_window" element={<Home />} />
+            <Route path="/main_window" element={<ListStudents />} />
             {/* <Route path="/main_window" element={<TestForm />} /> */}
             <Route path="/student" element={<ListStudents />} />
             <Route path="/student/create" element={<CreateStudent />} />

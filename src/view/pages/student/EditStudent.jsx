@@ -36,7 +36,7 @@ function EditStudent() {
     //* get the id from the url
     const { id } = useParams();
 
-    const [data, setData] = useState([
+    const [semestersData, setSemestersData] = useState([
         { semesterNumber: 1, subjects: [] },
         { semesterNumber: 2, subjects: [] },
         { semesterNumber: 3, subjects: [] },
@@ -44,8 +44,6 @@ function EditStudent() {
         { semesterNumber: 5, subjects: [] },
         { semesterNumber: 6, subjects: [] }
     ]);
-
-
 
     const [subjectData, setSubjectData] = useState({
         name: '',
@@ -71,7 +69,7 @@ function EditStudent() {
     };
 
     const addSubject = () => {
-        setData((prevData) => {
+        setSemestersData((prevData) => {
             const newData = [...prevData];
             newData[currentSemester - 1].subjects.push(subjectData);
             return newData;
@@ -91,7 +89,7 @@ function EditStudent() {
     };
 
     const removeSubject = (semesterNumber, index) => {
-        setData((prevData) => {
+        setSemestersData((prevData) => {
             const newData = [...prevData];
             newData[semesterNumber - 1].subjects.splice(index, 1);
             return newData;
@@ -103,39 +101,51 @@ function EditStudent() {
     });
 
     useEffect(() => {
+        const { ipcRenderer } = window.electron;
+        ipcRenderer.on("success-res", (event, data) => {
+            //* use the data to set the form values
+            data = JSON.parse(data);
+            console.log(data);
+            //* use loop to set the form values
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    if (key === 'extracurricularActivities' || key === 'club') {
+                        data[key].forEach((value, index) => {
+                            setValue(key, value, { shouldValidate: true });
+                        });
+                    } else if (key == 'semesters') {
+                        console.log(data[key]);
+                        setSemestersData(data[key]);
+                    }
+                    else {
+                        const value = data[key];
+                        setValue(key, value);
+                    }
+                }
+            }
+        });
+
+        ipcRenderer.on("error-res", (event, errorMessage) => {
+            console.error("Error fetching students:", errorMessage);
+            // Handle the error as needed
+        });
+
+        return () => {
+            ipcRenderer.removeAllListeners("success-res");
+            ipcRenderer.removeAllListeners("error-res");
+        }
+
+    }, []);
+
+    useEffect(() => {
 
         const fetchStudents = async () => {
+            console.log("hello iam here");
             try {
-                const { ipcRenderer } = window.electron;
+
 
                 await api.getStudent(id);
 
-                ipcRenderer.on("success-res", (event, data) => {
-                    //* use the data to set the form values
-                    data = JSON.parse(data);
-                    console.log(data);
-                    //* use loop to set the form values
-                    for (const key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            if (key === 'extracurricularActivities' || key === 'club') {
-                                data[key].forEach((value, index) => {
-                                    setValue(key, value, { shouldValidate: true });
-                                });
-                            } else if (key == 'semester') {
-                                setData(data[key]);
-                            }
-                            else {
-                                const value = data[key];
-                                setValue(key, value);
-                            }
-                        }
-                    }
-                });
-
-                ipcRenderer.on("error-res", (event, errorMessage) => {
-                    console.error("Error fetching students:", errorMessage);
-                    // Handle the error as needed
-                });
             } catch (error) {
                 console.error("Error fetching students:", error);
             }
@@ -151,9 +161,15 @@ function EditStudent() {
         console.log(data);
         try {
 
+            //* into studentData append the data and semestersData
+            const studentData = {
+                ...data,
+                semesters: semestersData
+            }
+
             const sendData = {
                 id,
-                studentData: data
+                studentData
             }
 
             await api.updateStudent(sendData);
@@ -282,126 +298,119 @@ function EditStudent() {
                     <p>{errors.photo?.message}</p>
                 </div> */}
 
+                {/* semester form*/}
+                {semestersData.map((semester, index) => (
+                    <div key={index}>
+                        <h3>Semester {semester.semesterNumber}</h3>
+                        <div>
+                            {semester.subjects.map((subject, subjectIndex) => (
+                                <div key={subjectIndex}>
+                                    <br />
+                                    <h4>Subject {subjectIndex + 1}</h4>
+                                    <label>Subject Name: {subject.name}</label>
+                                    <br />
+
+                                    <label>Attendance: {subject.attendance}</label>
+                                    <br />
+
+                                    <label>Seminar: {subject.seminar}</label>
+                                    <br />
+
+                                    <label>Assignment: {subject.assignment}</label>
+                                    <br />
+
+                                    <label>Internal: {subject.internal}</label>
+                                    <br />
+
+                                    <label>Total: {subject.total}</label>
+                                    <br />
+
+                                    <label>Exam: {subject.exam ? 'Yes' : 'No'}</label>
+
+                                    <button type="button" onClick={() => removeSubject(semester.semesterNumber, subjectIndex)}>
+                                        Remove Subject
+                                    </button>
+                                </div>
+                            ))}
+
+                            <button type="button" onClick={() => openModal(semester.semesterNumber)}>
+                                Add Subject
+                            </button>
+                        </div>
+                    </div>
+                ))}
 
                 <button type="submit">Submit</button>
             </form>
 
-            {/* <div>
-                <h1>Semester Form</h1>
-                {loading ? "Loading.." : <div>
-                    <form onSubmit={onSubmit}>
-                        {data.map((semester, index) => (
-                            <div key={index}>
-                                <h3>Semester {semester.semesterNumber}</h3>
-
-                                <div>
-                                    {semester.subjects.map((subject, subjectIndex) => (
-                                        <div key={subjectIndex}>
-                                            <br />
-                                            <h4>Subject {subjectIndex + 1}</h4>
-                                            <label>Subject Name: {subject.name}</label>
-                                            <br />
-
-                                            <label>Attendance: {subject.attendance}</label>
-                                            <br />
-
-                                            <label>Seminar: {subject.seminar}</label>
-                                            <br />
-
-                                            <label>Assignment: {subject.assignment}</label>
-                                            <br />
-
-                                            <label>Internal: {subject.internal}</label>
-                                            <br />
-
-                                            <label>Total: {subject.total}</label>
-                                            <br />
-
-                                            <label>Exam: {subject.exam ? 'Yes' : 'No'}</label>
-
-                                            <button type="button" onClick={() => removeSubject(semester.semesterNumber, subjectIndex)}>
-                                                Remove Subject
-                                            </button>
-                                        </div>
-                                    ))}
-
-                                    <button type="button" onClick={() => openModal(semester.semesterNumber)}>
-                                        Add Subject
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-
-                        <button type="submit">Submit</button>
-                    </form>
-                    {isModalOpen && (
-                        <div className="modal">
-                            <div className="modal-content">
-                                <h2>Add Subject for Semester {currentSemester}</h2>
-                                <label>Name:</label>
-                                <input
-                                    type="text"
-                                    value={subjectData.name}
-                                    onChange={(e) => setSubjectData({ ...subjectData, name: e.target.value })}
-                                />
-                                <br />
-                                <label>Attendance:</label>
-                                <input
-                                    type="number"
-                                    value={subjectData.attendance}
-                                    onChange={(e) => setSubjectData({ ...subjectData, attendance: e.target.value })}
-                                />
-                                <br />
-                                <label>Seminar:</label>
-                                <input
-                                    type="number"
-                                    value={subjectData.seminar}
-                                    onChange={(e) => setSubjectData({ ...subjectData, seminar: e.target.value })}
-                                />
-                                <br />
-                                <label>Assignment:</label>
-                                <input
-                                    type="number"
-                                    value={subjectData.assignment}
-                                    onChange={(e) => setSubjectData({ ...subjectData, assignment: e.target.value })}
-                                />
-                                <br />
-                                <label>Internal:</label>
-                                <input
-                                    type="number"
-                                    value={subjectData.internal}
-                                    onChange={(e) => setSubjectData({ ...subjectData, internal: e.target.value })}
-                                />
-                                <br />
-                                <label>Total:</label>
-                                <input
-                                    type="number"
-                                    value={subjectData.total}
-                                    onChange={(e) => setSubjectData({ ...subjectData, total: e.target.value })}
-                                />
-                                <br />
-                                <label>Exam:</label>
-                                <input
-                                    type="checkbox"
-                                    value={subjectData.exam}
-                                    onChange={(e) => setSubjectData({ ...subjectData, exam: e.target.checked })}
-                                />
+            <div>
+                {isModalOpen && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <h2>Add Subject for Semester {currentSemester}</h2>
+                            <label>Name:</label>
+                            <input
+                                type="text"
+                                value={subjectData.name}
+                                onChange={(e) => setSubjectData({ ...subjectData, name: e.target.value })}
+                            />
+                            <br />
+                            <label>Attendance:</label>
+                            <input
+                                type="number"
+                                value={subjectData.attendance}
+                                onChange={(e) => setSubjectData({ ...subjectData, attendance: e.target.value })}
+                            />
+                            <br />
+                            <label>Seminar:</label>
+                            <input
+                                type="number"
+                                value={subjectData.seminar}
+                                onChange={(e) => setSubjectData({ ...subjectData, seminar: e.target.value })}
+                            />
+                            <br />
+                            <label>Assignment:</label>
+                            <input
+                                type="number"
+                                value={subjectData.assignment}
+                                onChange={(e) => setSubjectData({ ...subjectData, assignment: e.target.value })}
+                            />
+                            <br />
+                            <label>Internal:</label>
+                            <input
+                                type="number"
+                                value={subjectData.internal}
+                                onChange={(e) => setSubjectData({ ...subjectData, internal: e.target.value })}
+                            />
+                            <br />
+                            <label>Total:</label>
+                            <input
+                                type="number"
+                                value={subjectData.total}
+                                onChange={(e) => setSubjectData({ ...subjectData, total: e.target.value })}
+                            />
+                            <br />
+                            <label>Exam:</label>
+                            <input
+                                type="checkbox"
+                                value={subjectData.exam}
+                                onChange={(e) => setSubjectData({ ...subjectData, exam: e.target.checked })}
+                            />
 
 
 
-                                <br />
-                                <button type="button" onClick={addSubject}>
-                                    Add Subject
-                                </button>
+                            <br />
+                            <button type="button" onClick={addSubject}>
+                                Add Subject
+                            </button>
 
-                                <button type="button" onClick={closeModal}>
-                                    Close
-                                </button>
-                            </div>
+                            <button type="button" onClick={closeModal}>
+                                Close
+                            </button>
                         </div>
-                    )}
-                </div>}
-            </div> */}
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
