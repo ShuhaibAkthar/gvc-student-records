@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //* pages
 import Home from './pages/home/Home.jsx';
-import Login from './pages/login/Login.jsx';
+import Login from './pages/login/login.jsx';
 import CreateStudent from './pages/student/CreateStudent.jsx';
 import EditStudent from './pages/student/EditStudent.jsx';
 import ViewStudent from './pages/student/ViewStudent.jsx';
@@ -16,7 +16,8 @@ import StudentSemesterForm from './pages/student/StudentSemesterForm.jsx';
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
         <Routes>
-            <Route path="/main_window" element={<ListStudents />} />
+        <Route path='/main_window' element={<Home/>}/>
+            <Route path="/listStudents" element={<ListStudents />} />
             {/* <Route path="/main_window" element={<TestForm />} /> */}
             <Route path="/student" element={<ListStudents />} />
             <Route path="/student/create" element={<CreateStudent />} />
