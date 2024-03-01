@@ -24,6 +24,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/student/edit/semester/:id" element={<StudentSemesterForm />} />
             <Route path="/student/view/:id" element={<ViewStudent />} />
             <Route path="/login" element={<Login />} />
+           
         </Routes>
     </BrowserRouter>
 )

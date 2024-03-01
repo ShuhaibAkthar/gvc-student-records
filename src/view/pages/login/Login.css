@@ -1,0 +1,58 @@
+body{
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    background-image: linear-gradient(to right, #c4cbf8, white);
+}
+
+.main-div{
+    border-radius: 12px;
+    margin-left: 570px;
+    margin-top: 190px;
+    background-color: white;
+    height: 400px;
+    width: 400px;
+}
+
+.textinput{
+    width: 84%;
+    padding: 12px 20px;
+    margin: 8px 32px; 
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  
+  input[type=submit] {
+    width: 84%;
+    background-color:#788BFF;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .head{
+    border-bottom: 2px  #5465FF ;
+    color: #5465FF;
+    padding: 40px 32px;
+    padding-bottom: 30px;
+    font-family:sans-serif;
+
+
+  }
+  .forget{
+    
+    color: rgb(233, 152, 152);
+    margin-left:34px ;
+  }
+
+
+  .createacc{
+   
+    padding-top: 40px;
+    margin-left:  34px ;
+  }

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../../Components/Navbar/Navbar.jsx'
 
 function Home() {
     return (
-        <div>
+        <div> 
+            <Navbar/>
             <h1>Home</h1>
 
             <h3>List Students</h3>

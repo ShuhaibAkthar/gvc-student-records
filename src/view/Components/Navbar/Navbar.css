@@ -1,0 +1,48 @@
+nav {
+    background-color: #053067;
+    padding: 5px 30px 5px 0px;
+    box-shadow: 7px 10px 5px rgb(156, 150, 150);
+  }
+  
+  .navTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .navItem1 {
+    margin-left: 40px;
+   
+    font-family: sans-serif;
+  }
+  .main{
+    color: white;
+    font-size:35px ;
+  }
+  
+  .adminicon {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    border-radius: 40px;
+  }
+  
+  
+  
+    .prefrontpage{
+      color: white;
+      text-decoration:none;
+     cursor: pointer;
+    }
+    
+    .navItem2{
+      margin: 6px -8px 7px;
+  
+  
+    }
+  
+    .admin{
+      color: white;
+      text-decoration: none;
+  
+    }
