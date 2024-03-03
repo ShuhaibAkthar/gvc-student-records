@@ -3,6 +3,7 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useParams } from 'react-router-dom';
+import Navbar from '../../Components/Navbar/Navbar.jsx'
 
 const schema = yup.object().shape({
     name: yup.string().required('Name is required'),
@@ -180,7 +181,14 @@ function EditStudent() {
     };
 
     return (
-        <div>
+        <body>
+        <div class="nav-div" >
+    <Navbar/>
+      </div>
+      <div class="container">
+      
+            <div class="form">
+            <div>
             <h1>EditStudent</h1>
 
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -412,6 +420,16 @@ function EditStudent() {
                 )}
             </div>
         </div>
+            </div>
+          </div>
+          
+          
+    </body>
+
+
+
+
+        
     )
 }
 

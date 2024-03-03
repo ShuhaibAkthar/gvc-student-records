@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Navbar from '../../Components/Navbar/Navbar.jsx'
+import './Liststudents.css';
 
 function ListStudents() {
     const [students, setStudents] = useState([]);
@@ -72,39 +74,75 @@ function ListStudents() {
     };
 
     return (
-        <div>
-            <h1>Student List</h1>
-            <div>
-                <label htmlFor="search">Search:</label>
+        <body>
+             <div class="nav-div" >
+    <Navbar/>
+      </div>
+    
+       
+   
+      <div class="container">
+      <div class="sidebar">
+        <a href="#">
+          {" "}
+          <Link to="/student">Students List</Link>
+        </a>
+        <a href="#">
+          {" "}
+          <Link to="/student/create">Create Student</Link>
+        </a>
+        <a href="#">
+          {" "}
+          <Link to="/student/edit/:id">Edit Student</Link>
+        </a>
+        <a href="#">
+          <Link to="/settings">Settings</Link>
+        </a>
+        <a href="#">
+          <Link to="/student/create">About us</Link>
+        </a>
+      </div>
+
+
+
+        <div class="form"><div>
+            <h1 class="list-head">Student List</h1>
+            <div class="search-container-list">
+               
                 <input
+                   class="search-box"
                     type="text"
                     id="search"
                     value={query}
                     onChange={handleSearch}
                 />
+                 <button class="search-button">Search</button>
             </div>
             <div>
-                <label>
+                <label class="list-label">
                     NCC:
                     <input
+                    class="list-radio"
                         type="checkbox"
                         name="ncc"
                         checked={filters.ncc}
                         onChange={handleFilterChange}
                     />
                 </label>
-                <label>
+                <label class="list-label">
                     Scout:
                     <input
+                     class="list-radio"
                         type="checkbox"
                         name="scout"
                         checked={filters.scout}
                         onChange={handleFilterChange}
                     />
                 </label>
-                <label>
-                    Club:
+                <label> <br/>
+                  
                     <select
+                        class="list-select"
                         name="club"
                         value={filters.club}
                         onChange={handleFilterChange}
@@ -118,10 +156,10 @@ function ListStudents() {
             </div>
             {isLoading && <p>Loading...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
-            <table border={"1"}>
-                <thead>
-                    <tr>
-                        <th>Name</th>
+            <table class="list-table" border={"1"}>
+                <thead class="list-thead">
+                    <tr class="list-tr">
+                        <th class="">Name</th>
                         <th>Reg No</th>
                         <th>-</th>
                     </tr>
@@ -157,7 +195,16 @@ function ListStudents() {
                     Next Page
                 </button>
             </div>
-        </div>
+        </div></div>
+      </div>
+      
+      
+</body>
+
+
+
+
+        
     );
 }
 

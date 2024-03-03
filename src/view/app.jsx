@@ -10,6 +10,7 @@ import ViewStudent from './pages/student/ViewStudent.jsx';
 import ListStudents from './pages/student/ListStudents.jsx';
 import TestForm from './pages/student/TestForm.jsx';
 import StudentSemesterForm from './pages/student/StudentSemesterForm.jsx';
+import Settings from './pages/Settings/Settings.jsx';
 
 
 
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/student/edit/semester/:id" element={<StudentSemesterForm />} />
             <Route path="/student/view/:id" element={<ViewStudent />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/settings" element={<Settings/>}/>
            
         </Routes>
     </BrowserRouter>

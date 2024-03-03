@@ -1,0 +1,49 @@
+/* .navb{
+    position: relative;  
+    justify-content: space-around; 
+    
+  }
+  
+  
+  
+  .container {
+    width: 100%;
+    height: calc(100vh - 40px); 
+    display: flex;
+  }
+  
+   */
+
+   .settings-head{
+    font-family: sans-serif;
+
+   }
+
+   .child2 {
+    margin-top: 20px;
+    margin-left: 150px;
+  }
+  .child2 h1{
+    font-family: sans-serif;
+
+      margin-bottom:25px ;
+  }
+  
+  .child21 {
+      padding-top: 7px;
+      height: 45px;
+      background-color: #ebeef2;
+      margin-bottom: 22px;
+      border-radius: 12px;
+      color: black;
+    
+  }
+  
+  .child21 a {
+    font-family: sans-serif;
+
+      text-decoration: none;
+    margin-left: 20px;
+    font-size: 20px;
+  }
+  

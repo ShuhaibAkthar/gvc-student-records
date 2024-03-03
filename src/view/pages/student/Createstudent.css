@@ -1,0 +1,70 @@
+.main-head{
+    color:black ;
+    margin: 8px 127px;
+    margin-top: 20px;
+    font-family: sans-serif;
+
+}
+
+.divtype1{
+    
+    margin: 10px 0px 0px 130px;
+    width: 45%;
+    float: left;
+}
+
+.divtype2{
+    margin: 8px 160px 0px 0px;
+    width: 34%;
+    float: right;
+  }
+
+  .div-photo {
+    margin: -20px 250px 1px 0px;
+    width: none;
+    float: right;
+}
+
+.inputtext{
+    width:100%;
+    padding: 12px 20px;
+    /* margin: 8px 32px; */
+   
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+}
+
+.photo {
+    margin: 21px 127px;
+    width: 120px;
+    height: 120px;
+    float: right;
+    background-color: #707088;
+}
+
+
+select {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: white;
+  }
+
+
+
+ 
+
+.submitbtn{
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+  }
