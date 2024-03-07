@@ -46,4 +46,25 @@ module.exports = {
       },
     },
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'me',
+          name: 'awesome-thing'
+        },
+        prerelease: true
+      }
+    }
+  ],
+  makers: [
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin', 'linux', 'win32', 'win64'],
+      config: {
+        // Config here
+      }
+    }
+  ]
 };
